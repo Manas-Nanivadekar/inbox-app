@@ -1,4 +1,4 @@
-package me.manasnanivadekar;
+package me.manasnanivadekar.inbox;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
