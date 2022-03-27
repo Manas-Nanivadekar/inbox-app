@@ -6,6 +6,7 @@ target/
 .DS_Store
 .mvn/
 
+
 ### STS ###
 .apt_generated
 .classpath
@@ -33,3 +34,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Astra ###
+secure-connect.zip
