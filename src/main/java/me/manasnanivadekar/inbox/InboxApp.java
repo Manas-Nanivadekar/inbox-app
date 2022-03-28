@@ -17,6 +17,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import me.manasnanivadekar.inbox.email.Email;
+import me.manasnanivadekar.inbox.email.EmailRepository;
 import me.manasnanivadekar.inbox.emaillist.EmailListItem;
 import me.manasnanivadekar.inbox.emaillist.EmailListItemKey;
 import me.manasnanivadekar.inbox.emaillist.EmailListItemRepository;
@@ -32,6 +34,9 @@ public class InboxApp {
 
 	@Autowired
 	EmailListItemRepository emailListItemRepository;
+
+	@Autowired
+	EmailRepository emailRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(InboxApp.class, args);
@@ -63,11 +68,19 @@ public class InboxApp {
 
 			EmailListItem item = new EmailListItem();
 			item.setKey(key);
-			item.setTo(Arrays.asList("Manas-Nanivadekar"));
+			item.setTo(Arrays.asList("Manas-Nanivadekar", "abc", "def"));
 			item.setSubject("subject" + i);
 			item.setUnread(true);
 
 			emailListItemRepository.save(item);
+
+			Email email = new Email();
+			email.setId(key.getTimeUUID());
+			email.setFrom("Manas-Naniavdekar");
+			email.setSubject(item.getSubject());
+			email.setBody("Body" + i);
+			email.setTo(item.getTo());
+			emailRepository.save(email);
 		}
 	}
 
