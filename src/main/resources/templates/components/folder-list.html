@@ -17,7 +17,10 @@
                 th:text="${folder.label}"
                 >Label</a
               >
-              <span class="badge bg-primary rounded-pill">14</span>
+              <span
+                class="badge bg-primary rounded-pill"
+                th:text="${stats.get(folder.label)}"
+              ></span>
             </li>
           </ul>
         </div>
