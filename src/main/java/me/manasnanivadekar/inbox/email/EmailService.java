@@ -34,6 +34,7 @@ public class EmailService {
         });
 
         EmailListItem sentItemEntry = createEmailListItem(to, subject, email, from, "Sent Items");
+        sentItemEntry.setUnread(false);
         emailListItemRepository.save(sentItemEntry);
 
     }
