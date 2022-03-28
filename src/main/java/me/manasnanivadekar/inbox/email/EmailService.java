@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import me.manasnanivadekar.inbox.emaillist.EmailListItem;
 import me.manasnanivadekar.inbox.emaillist.EmailListItemKey;
 import me.manasnanivadekar.inbox.emaillist.EmailListItemRepository;
+import me.manasnanivadekar.inbox.folders.UnreadEmailStatsRepository;
 
 @Service
 public class EmailService {
@@ -18,6 +19,8 @@ public class EmailService {
     private EmailRepository emailRepository;
     @Autowired
     private EmailListItemRepository emailListItemRepository;
+    @Autowired
+    private UnreadEmailStatsRepository unreadEmailStatsRepository;
 
     public void sendEmail(String from, List<String> to, String subject, String body) {
         Email email = new Email();
@@ -31,6 +34,7 @@ public class EmailService {
         to.forEach(toId -> {
             EmailListItem item = createEmailListItem(to, subject, email, toId, "Inbox");
             emailListItemRepository.save(item);
+            unreadEmailStatsRepository.incrementUnreadCount(toId, "Inbox");
         });
 
         EmailListItem sentItemEntry = createEmailListItem(to, subject, email, from, "Sent Items");
