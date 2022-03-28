@@ -5,8 +5,6 @@ import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
 
-import com.datastax.oss.driver.api.core.uuid.Uuids;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,14 +15,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import me.manasnanivadekar.inbox.email.Email;
-import me.manasnanivadekar.inbox.email.EmailRepository;
-import me.manasnanivadekar.inbox.emaillist.EmailListItem;
-import me.manasnanivadekar.inbox.emaillist.EmailListItemKey;
-import me.manasnanivadekar.inbox.emaillist.EmailListItemRepository;
+import me.manasnanivadekar.inbox.email.EmailService;
 import me.manasnanivadekar.inbox.folders.Folder;
 import me.manasnanivadekar.inbox.folders.FolderRepository;
-import me.manasnanivadekar.inbox.folders.UnreadEmailStatsRepository;
 
 @SpringBootApplication
 @RestController
@@ -34,13 +27,7 @@ public class InboxApp {
 	FolderRepository folderRepository;
 
 	@Autowired
-	EmailListItemRepository emailListItemRepository;
-
-	@Autowired
-	EmailRepository emailRepository;
-
-	@Autowired
-	UnreadEmailStatsRepository unreadEmailStatsRepository;
+	EmailService emailService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(InboxApp.class, args);
@@ -60,35 +47,12 @@ public class InboxApp {
 
 	@PostConstruct
 	public void init() {
-		folderRepository.save(new Folder("Manas-Nanivadekar", "Inbox", "blue"));
-		folderRepository.save(new Folder("Manas-Nanivadekar", "Sent", "green"));
-		folderRepository.save(new Folder("Manas-Nanivadekar", "IMP", "yellow"));
-
-		unreadEmailStatsRepository.incrementUnreadCount("Manas-Nanivadekar", "Inbox");
-		unreadEmailStatsRepository.incrementUnreadCount("Manas-Nanivadekar", "Inbox");
-		unreadEmailStatsRepository.incrementUnreadCount("Manas-Nanivadekar", "Inbox");
+		folderRepository.save(new Folder("Manas-Nanivadekar", "Work", "blue"));
+		folderRepository.save(new Folder("Manas-Nanivadekar", "Home", "green"));
+		folderRepository.save(new Folder("Manas-Nanivadekar", "StartUp", "yellow"));
 
 		for (int i = 0; i < 10; i++) {
-			EmailListItemKey key = new EmailListItemKey();
-			key.setId("Manas-Nanivadekar");
-			key.setLabel("Inbox");
-			key.setTimeUUID(Uuids.timeBased());
-
-			EmailListItem item = new EmailListItem();
-			item.setKey(key);
-			item.setTo(Arrays.asList("Manas-Nanivadekar", "abc", "def"));
-			item.setSubject("subject" + i);
-			item.setUnread(true);
-
-			emailListItemRepository.save(item);
-
-			Email email = new Email();
-			email.setId(key.getTimeUUID());
-			email.setFrom("Manas-Naniavdekar");
-			email.setSubject(item.getSubject());
-			email.setBody("Body" + i);
-			email.setTo(item.getTo());
-			emailRepository.save(email);
+			emailService.sendEmail("Manas-Nanivadekar", Arrays.asList("Manas-Nanivadekar", "abc"), "Hello" + i, "Body");
 		}
 	}
 
