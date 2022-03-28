@@ -77,16 +77,22 @@
                     View Email
                 </div>
 
-                <dl clss="card-body">
-                    <dt>From</dt>
-                    <dd th:text="${email.from}">From ID</dd>
-                    <dt>To</dt>
-                    <dd th:text="${toIds}">From ID</dd>
-                    <dt>Subject</dt>
-                    <dd th:text="${email.subject}">From ID</dd>
-                    <dt>Body</dt>
-                    <dd th:text="${email.body}">From ID</dd>
-                    <dl />
+                <div clss="card-body">
+                    <dl>
+                        <dt>From</dt>
+                        <dd th:text="${email.from}">From ID</dd>
+                        <dt>To</dt>
+                        <dd th:text="${toIds}">From ID</dd>
+                        <dt>Subject</dt>
+                        <dd th:text="${email.subject}">From ID</dd>
+                        <dt>Body</dt>
+                        <dd th:text="${email.body}">From ID</dd>
+                    </dl>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a class="btn btn-primary me-md-2" th:href="@{'/compose?to=' + ${email.from}}" type="button">Reply</a>
+                        <a class="btn btn-primary" th:href="@{'/compose?to=' + ${toIds} + ', ' + ${email.from}}"  type="button">Reply All</a>
+                    </div>
+                </div >
         </main>
 
         <footer>
