@@ -54,7 +54,7 @@ public class InboxControllers {
 
         // Fetch messages
         if (!StringUtils.hasText(folder)) {
-            folder = "inbox";
+            folder = "Inbox";
         }
         List<EmailListItem> emailList = emailListItemRepository.findAllByKey_IdAndKey_Label(userId, folder);
         PrettyTime p = new PrettyTime();
